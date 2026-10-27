@@ -255,6 +255,12 @@
                 clearSelection()
             }
 
+            // Standard responder action so the system-injected Copy menu item
+            // copies the label's selection instead of being a dead button.
+            override public func copy(_ sender: Any?) {
+                copyMenuItemTapped()
+            }
+
             @objc func selectAllTapped() {
                 selectAllText()
                 DispatchQueue.main.async {
@@ -284,6 +290,10 @@
                 _ action: Selector,
                 withSender _: Any?
             ) -> Bool {
+                if action == #selector(copy(_:)) {
+                    return selectionRange != nil
+                        && selectionRange!.length > 0
+                }
                 if action == #selector(copyMenuItemTapped) {
                     return selectionRange != nil
                         && selectionRange!.length > 0

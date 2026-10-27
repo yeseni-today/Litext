@@ -48,7 +48,9 @@
         }
 
         static func textSelectionMenu() -> [LTXLabelMenuItem] {
-            allCases
+            // System injects the standard Copy item into the selection menu on
+            // iOS 16+; keep only the custom items that have no system twin.
+            allCases.filter { $0 != .copy }
         }
     }
 
